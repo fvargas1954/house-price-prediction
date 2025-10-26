@@ -1,42 +1,47 @@
+# Proyecto
+
+Pipeline de Machine Learning para Detección de Fraude
+
 # Descripción
 
-Pipeline automatizado de CI/CD para detección de fraude en transacciones con tarjeta de crédito, utilizando MLflow para tracking y GitHub Actions para automatización.
+Este proyecto implementa un pipeline automatizado de machine learning para la detección de fraude en transacciones con tarjeta de crédito, utilizando MLOps, integración continua (CI/CD) mediante GitHub Actions, tracking de experimentos con MLflow, y automatización de tareas con Makefile.
 
-## Objetivo
-
-Implementar un pipeline completo de MLOps que:
-- Entrena un modelo de clasificación binaria para detectar fraudes
-- Registra experimentos, métricas y modelos con MLflow
-- Valida automáticamente con datos externos
-- Implementa gates de calidad (umbrales de métricas)
-- Se ejecuta automáticamente via GitHub Actions
 
 ## Dataset
 
-**Fuente:** [Credit Card Fraud Detection - Kaggle](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud)
+Fuente: Credit Card Fraud Detection Dataset
+Características:
 
-**Características:**
-- **Filas:** 284,807 transacciones
-- **Features:** 30 (28 PCA + Time + Amount)
-- **Target:** Class (0=legítima, 1=fraude)
-- **Desbalance:** 99.83% legítimas vs 0.17% fraude
+Tamaño del dataset: 284,807
+Total de transacciones de la muestra a trabajar: 50,000
+Distribución: 40,000 entrenamiento / 10,000 prueba
+Variables: 30 características (V1-V28, Time, Amount)
+Variable objetivo: Class (0 = legítima, 1 = fraude)
 
-**División:**
-- Train: 227,845 filas (80%)
-- Test: 56,962 filas (20%)
+El dataset contiene transacciones realizadas con tarjetas de crédito, donde la clase positiva (fraude) representa una pequeña proporción del total de transacciones, simulando un escenario realista de detección de fraude.
 
 ## Estructura del Proyecto
 
 mlflow-deploy/
 ├── data/
+│   ├── creditcard.csv          # Total Muestra
 │   ├── train_data.csv          # Datos de entrenamiento
 │   └── test_data.csv           # Datos de validación externa
 ├── mlruns/                     # Tracking de MLflow (generado)
 ├── .github/
 │   └── workflows/
 │       └── mlflow-ci.yml       # Pipeline CI/CD automatizado
-├── train.py                    # Script de entrenamiento
-├── validate.py                 # Script de validación con datos externos
+│       └── ml.yml              # Define el pipeline de CI/CD en GitHub Actions.
+├── src/
+│   └── __init__.py             # Convierte la carpeta src/ en un paquete de Python
+│   └── config.py
+│   └── train.py                # Script de entrenamiento
+│   └── utils.py                # Contiene funciones auxiliares reutilizables
+│   └── validate.py             # Script de validación
+├── tets/
+│   └── __init__.py             # Convierte la carpeta tests/ en un paquete de Python.
+│   └── test_model.py
+├── .gitignore       
 ├── Makefile                    # Comandos simplificados
 ├── requirements.txt            # Dependencias del proyecto
 └── README.md                   # Documentación
@@ -71,8 +76,8 @@ El modelo se evalúa con múltiples métricas apropiadas para clasificación des
 ### Instalación
 ```bash
 # Clonar repositorio
-git clone https://github.com/fvargas1954/mlflow-deploy.git
-cd mlflow-deploy
+git clone https://github.com/fvargas1954/credit-card-fraud-detection.git
+cd credit-card-fraud-detection
 
 # Crear entorno virtual
 python -m venv venv
