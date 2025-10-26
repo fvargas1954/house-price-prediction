@@ -1,0 +1,28 @@
+# Configuración del proyecto de detección de fraude
+
+project:
+  name: "fraud-detection-pipeline"
+  version: "1.0.0"
+  description: "Detección de fraude en transacciones con tarjeta de crédito"
+
+data:
+  train_path: "data/train_data.csv"
+  test_path: "data/test_data.csv"
+  
+model:
+  name: "LogisticRegression"
+  type: "classification"
+  
+  params:
+    max_iter: 1000
+    solver: "liblinear"
+    class_weight: "balanced"
+    random_state: 42
+  
+  threshold_f1: 0.10
+  threshold_recall: 0.80
+  threshold_roc_auc: 0.90
+
+mlflow:
+  experiment_name: "fraud-detection-pipeline"
+  tracking_uri: "./mlruns"
